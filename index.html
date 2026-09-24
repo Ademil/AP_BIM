@@ -591,6 +591,20 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
 </div>
 
 <script>
+
+// Bloqueio básico de console em produção
+if (location.hostname === 'ademil.github.io') {
+  var _noop = function () {};
+  var _origWarn = console.warn;
+  var _origError = console.error;
+  console.log = _noop;
+  console.info = _noop;
+  console.debug = _noop;
+  console.trace = _noop;
+  // Mantém warn/error para debug do usuário
+  // NÃO bloqueia console.log em desenvolvimento local
+}
+
 /* ============================================================
    SAFE STORAGE
    ============================================================ */
@@ -661,12 +675,28 @@ function parseLicenseKey(key) {
   }
   return result;
 }
-function licenseFirstRun() {
-  var v = SafeStorage.getItem(LICENSE.KEY_FIRST_RUN);
-  if (!v) { v = Date.now().toString(); SafeStorage.setItem(LICENSE.KEY_FIRST_RUN, v); }
-  return parseInt(v, 10);
+function getDeviceFingerprint() {
+  var parts = [
+    navigator.userAgent,
+    navigator.language,
+    screen.width + 'x' + screen.height,
+    screen.colorDepth,
+    new Date().getTimezoneOffset(),
+    navigator.hardwareConcurrency || 0,
+    navigator.deviceMemory || 0
+  ];
+  var s = parts.join('|');
+  var h = 0;
+  for (var i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+  return Math.abs(h).toString(36).toUpperCase();
 }
-function licenseDaysLeft() { return Math.max(0, LICENSE.TRIAL_DAYS - Math.floor((Date.now() - licenseFirstRun()) / 86400000)); }
+function licenseFirstRun() {
+  var fp = getDeviceFingerprint();
+  var key = LICENSE.KEY_FIRST_RUN + '_' + fp;
+  var v = SafeStorage.getItem(key);
+  if (!v) { v = Date.now().toString(); SafeStorage.setItem(key, v); }
+  return parseInt(v, 10);
+}function licenseDaysLeft() { return Math.max(0, LICENSE.TRIAL_DAYS - Math.floor((Date.now() - licenseFirstRun()) / 86400000)); }
 function getLicenseState() {
   var saved = SafeStorage.getItem(LICENSE.KEY_LICENSE);
   if (saved) {
@@ -696,11 +726,28 @@ function submitLicense() {
     setTimeout(function () { location.reload(); }, 1000);
   } else { msg.innerText = 'Chave inválida.'; msg.style.color = '#f87171'; }
 }
-if (location.search.indexOf('reset-trial') >= 0) {
-  SafeStorage.removeItem(LICENSE.KEY_FIRST_RUN);
-  SafeStorage.removeItem(LICENSE.KEY_LICENSE);
-}
-function showLicenseModal() {
+/* ============================================================
+   RESET PROTEGIDO — requer chave-mestra secreta
+   Uso: ?reset=CHAVE_MESTRA
+   Ex: ?reset=APAVAN-MASTER-9F3B7D2E
+   ============================================================ */
+var MASTER_RESET_KEY = 'APAVAN-MASTER-9F3B7D2E';
+(function () {
+  var m = location.search.match(/[?&]reset=([^&]+)/);
+  if (!m) return;
+  var provided = decodeURIComponent(m[1]).toUpperCase();
+  if (provided === MASTER_RESET_KEY) {
+    SafeStorage.removeItem(LICENSE.KEY_FIRST_RUN);
+    SafeStorage.removeItem(LICENSE.KEY_LICENSE);
+    console.log('[LICENSE] Trial resetado pelo master.');
+    setTimeout(function () {
+      alert('✓ Trial resetado para 15 dias.');
+      location.href = location.pathname;
+    }, 300);
+  } else {
+    console.warn('[LICENSE] Tentativa de reset com chave inválida.');
+  }
+})();function showLicenseModal() {
   var st = getLicenseState();
   var ov = document.getElementById('licenseOverlay');
   var title = document.getElementById('licTitle');
