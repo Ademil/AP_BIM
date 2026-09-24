@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AP BIM">
 <title>AP BIM — APAVAN Engenharia e Consultoria</title>
 <meta name="theme-color" content="#1e3a8a">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMWUzYThhIi8+PHRleHQgeD0iOTAiIHk9IjEwMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9Ijc2IiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BUDwvdGV4dD48dGV4dCB4PSI5MCIgeT0iMTI4IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkJJTTwvdGV4dD48L3N2Zz4=">
@@ -14,8 +17,9 @@
 <script src="./web-ifc-api-iife.js"></script>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#0f172a;color:#f8fafc;overflow:hidden;height:100vh;display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent}
-button{font-family:inherit;cursor:pointer;border:none;border-radius:.375rem;padding:.4rem .7rem;font-size:.75rem;background:#1e293b;color:#e2e8f0;transition:background .15s}
+html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;overscroll-behavior:none}
+body{font-family:-apple-system,system-ui,sans-serif;background:#0f172a;color:#f8fafc;display:flex;flex-direction:column;height:100vh;height:100dvh;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+button{font-family:inherit;cursor:pointer;border:none;border-radius:.375rem;padding:.4rem .7rem;font-size:.75rem;background:#1e293b;color:#e2e8f0;transition:background .15s;-webkit-tap-highlight-color:transparent}
 button:hover{background:#334155}
 button:active{transform:scale(.97)}
 input,select,textarea{font-family:inherit;background:#020617;border:1px solid #1e293b;color:#f1f5f9;border-radius:.375rem;padding:.35rem .5rem;font-size:.75rem;outline:none;width:100%}
@@ -27,6 +31,7 @@ input[type="range"]::-moz-range-track{height:4px;background:#334155;border-radiu
 input[type="range"]::-moz-range-thumb{width:18px;height:18px;background:#3b82f6;border-radius:50%;border:none;cursor:pointer}
 input[type="color"]{padding:0;height:2.4rem;border-radius:.4rem;cursor:pointer}
 ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:#1e293b}::-webkit-scrollbar-thumb{background:#475569;border-radius:3px}
+canvas{touch-action:none;-webkit-user-select:none;-webkit-touch-callout:none}
 
 header{height:3.5rem;background:#0f172a;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;padding:0 1rem;z-index:20;flex-shrink:0;gap:.5rem}
 .logo{background:linear-gradient(135deg,#1d4ed8,#2563eb);padding:.5rem;border-radius:.5rem;color:#fff}
@@ -45,7 +50,7 @@ header{height:3.5rem;background:#0f172a;border-bottom:1px solid #1e293b;display:
 main{flex:1;display:flex;flex-direction:column;position:relative;background:#020617;min-width:0}
 .canvas-wrap{position:relative;flex:1;overflow:hidden}
 #bimCanvas{display:block;width:100%;height:100%}
-#clashMarkersContainer{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+#clashMarkersContainer{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden}
 #axisCompass{position:absolute;bottom:14px;right:14px;width:80px;height:80px;pointer-events:none;opacity:.85}
 
 aside{background:#0f172a;border-right:1px solid #1e293b;display:flex;flex-direction:column;width:20rem;flex-shrink:0;z-index:10}
@@ -95,7 +100,7 @@ aside.right{border-right:none;border-left:1px solid #1e293b;width:24rem}
 .status-dot{width:8px;height:8px;border-radius:50%;background:#10b981;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.9);z-index:100}
+.loading{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.9);z-index:100}
 .loading.hidden{display:none}
 .spinner{width:44px;height:44px;border:4px solid rgba(59,130,246,.2);border-top-color:#3b82f6;border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -111,9 +116,9 @@ aside.right{border-right:none;border-left:1px solid #1e293b;width:24rem}
 .mobile-fab.fab-bc:active{transform:translateX(-50%) scale(.92)}
 .mobile-fab.fab-br{bottom:calc(env(safe-area-inset-bottom) + 80px);right:14px}
 
-.sidebar-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:90;display:none}
+.sidebar-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:90;display:none}
 .sidebar-backdrop.open{display:block}
-.actions-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:70;display:none;opacity:0;transition:opacity .2s}
+.actions-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:70;display:none;opacity:0;transition:opacity .2s}
 .actions-backdrop.open{display:block;opacity:1}
 .actions-sheet{position:fixed;left:0;right:0;bottom:0;background:#0f172a;border-top-left-radius:20px;border-top-right-radius:20px;z-index:110;padding:8px 12px calc(env(safe-area-inset-bottom) + 16px);transform:translateY(110%);transition:transform .28s cubic-bezier(.4,0,.2,1);max-width:500px;margin:0 auto;max-height:85vh;overflow-y:auto;border-top:1px solid rgba(255,255,255,.1)}
 .actions-sheet.open{transform:translateY(0)}
@@ -129,12 +134,12 @@ aside.right{border-right:none;border-left:1px solid #1e293b;width:24rem}
 .selected-bar{position:fixed;left:0;right:0;bottom:0;z-index:45;background:rgba(15,23,42,.96);backdrop-filter:blur(12px);border-top:1px solid rgba(96,165,250,.35);padding:.5rem .75rem;display:none;padding-bottom:calc(env(safe-area-inset-bottom) + .5rem)}
 .selected-bar.show{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
 
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:none;align-items:center;justify-content:center;padding:1.25rem}
+.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);z-index:200;display:none;align-items:center;justify-content:center;padding:1.25rem}
 .modal.show{display:flex}
-.modal-box{background:#1e293b;border:1px solid #334155;border-radius:1rem;padding:1.5rem;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.modal-box{background:#1e293b;border:1px solid #334155;border-radius:1rem;padding:1.5rem;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6)}
 .modal-box h2{margin:0 0 .5rem;font-size:1.1rem;font-weight:800}
 .modal-box p{margin:0 0 1rem;font-size:.8rem;color:#94a3b8;white-space:pre-line}
-.modal-box input{width:100%;padding:.75rem;text-align:center;font-family:monospace;text-transform:uppercase}
+.modal-box input{width:100%;padding:.75rem;text-align:center;font-family:monospace;text-transform:uppercase;letter-spacing:1px}
 .modal-box .btn-full{width:100%;margin-top:.75rem;padding:.75rem;font-size:.85rem;font-weight:700;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff}
 .modal-box .contact{margin-top:1rem;padding-top:.75rem;border-top:1px solid #334155;font-size:.7rem;color:#64748b;text-align:center;line-height:1.6}
 
@@ -244,8 +249,8 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
     <div>
       <div style="display:flex;align-items:center;gap:.4rem">
         <span class="title">AP BIM</span>
-        <span class="badge">v5.5</span>
-        <span id="trialBadge" style="display:none;font-size:.6rem;color:#fbbf24;background:rgba(245,158,11,.15);padding:.1rem .4rem;border-radius:.25rem">Trial: <span id="trialDays">15</span>d</span>
+        <span class="badge">v6.0</span>
+        <span id="licenseBadge" style="display:none;font-size:.6rem;padding:.1rem .4rem;border-radius:.25rem;font-weight:600"></span>
       </div>
       <div class="subtitle">APAVAN ENGENHARIA E CONSULTORIA</div>
     </div>
@@ -258,6 +263,7 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
     </label>
     <button class="btn-danger desktop-only" onclick="runClashDetection()"><i class="fa-solid fa-bolt"></i> Analisar</button>
     <button class="btn-purple desktop-only" id="btnSectionHeader" onclick="toggleSectionPanel()"><i class="fa-solid fa-scissors"></i> Seção</button>
+    <button class="desktop-only" onclick="showLicenseModal()" title="Licença"><i class="fa-solid fa-key" style="color:#fbbf24"></i></button>
   </div>
 </header>
 
@@ -266,7 +272,7 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
 <aside id="leftSidebar">
   <div class="tabs">
     <button id="tab-btn-models" class="active" onclick="switchLeftTab('models')" title="Modelos"><i class="fa-solid fa-cubes"></i></button>
-    <button id="tab-btn-transform" onclick="switchLeftTab('transform')" title="Rotacionar / Mover IFC"><i class="fa-solid fa-rotate"></i></button>
+    <button id="tab-btn-transform" onclick="switchLeftTab('transform')" title="Rotacionar / Mover"><i class="fa-solid fa-rotate"></i></button>
     <button id="tab-btn-tree" onclick="switchLeftTab('tree')" title="Árvore IFC"><i class="fa-solid fa-sitemap"></i></button>
     <button id="tab-btn-appearance" onclick="switchLeftTab('appearance')" title="Cores e Texturas"><i class="fa-solid fa-palette"></i></button>
     <button id="tab-btn-dimension" onclick="switchLeftTab('dimension')" title="Dimensões"><i class="fa-solid fa-ruler-combined"></i></button>
@@ -296,118 +302,58 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
         <option value="">— Selecione um modelo —</option>
       </select>
     </div>
-
     <div id="transformControls" style="display:none">
       <div class="panel">
         <div class="panel-title"><i class="fa-solid fa-circle-info"></i> Informações</div>
-        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#94a3b8;margin-bottom:.25rem">
-          <span>Dimensões (X×Y×Z):</span><span id="tInfoDims" style="font-family:monospace;color:#e2e8f0">-</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#94a3b8">
-          <span>Centro:</span><span id="tInfoCenter" style="font-family:monospace;color:#e2e8f0">-</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#94a3b8;margin-bottom:.25rem"><span>Dimensões:</span><span id="tInfoDims" style="font-family:monospace;color:#e2e8f0">-</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#94a3b8"><span>Centro:</span><span id="tInfoCenter" style="font-family:monospace;color:#e2e8f0">-</span></div>
       </div>
-
       <div class="panel">
         <div class="panel-title" style="justify-content:space-between">
           <span><i class="fa-solid fa-rotate" style="color:#60a5fa"></i> Rotação (graus)</span>
           <button class="icon-btn" onclick="resetRotation()" title="Zerar"><i class="fa-solid fa-rotate-left"></i></button>
         </div>
-
         <div style="margin-bottom:.5rem">
-          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem">
-            <label style="color:#ef4444;font-weight:700">Eixo X</label><span id="rotXVal" style="font-family:monospace;color:#60a5fa">0.0°</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:.4rem">
-            <input type="range" id="rotX" min="-180" max="180" step="1" value="0" oninput="onRotSlider('X')" style="flex:1">
-            <input type="number" id="rotXNum" min="-180" max="180" value="0" onchange="onRotNum('X')" style="width:60px;text-align:center;font-family:monospace">
-          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem"><label style="color:#ef4444;font-weight:700">Eixo X</label><span id="rotXVal" style="font-family:monospace;color:#60a5fa">0.0°</span></div>
+          <div style="display:flex;align-items:center;gap:.4rem"><input type="range" id="rotX" min="-180" max="180" step="1" value="0" oninput="onRotSlider('X')" style="flex:1"><input type="number" id="rotXNum" value="0" onchange="onRotNum('X')" style="width:60px;text-align:center;font-family:monospace"></div>
         </div>
-
         <div style="margin-bottom:.5rem">
-          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem">
-            <label style="color:#10b981;font-weight:700">Eixo Y</label><span id="rotYVal" style="font-family:monospace;color:#60a5fa">0.0°</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:.4rem">
-            <input type="range" id="rotY" min="-180" max="180" step="1" value="0" oninput="onRotSlider('Y')" style="flex:1">
-            <input type="number" id="rotYNum" min="-180" max="180" value="0" onchange="onRotNum('Y')" style="width:60px;text-align:center;font-family:monospace">
-          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem"><label style="color:#10b981;font-weight:700">Eixo Y</label><span id="rotYVal" style="font-family:monospace;color:#60a5fa">0.0°</span></div>
+          <div style="display:flex;align-items:center;gap:.4rem"><input type="range" id="rotY" min="-180" max="180" step="1" value="0" oninput="onRotSlider('Y')" style="flex:1"><input type="number" id="rotYNum" value="0" onchange="onRotNum('Y')" style="width:60px;text-align:center;font-family:monospace"></div>
         </div>
-
         <div>
-          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem">
-            <label style="color:#3b82f6;font-weight:700">Eixo Z</label><span id="rotZVal" style="font-family:monospace;color:#60a5fa">0.0°</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:.4rem">
-            <input type="range" id="rotZ" min="-180" max="180" step="1" value="0" oninput="onRotSlider('Z')" style="flex:1">
-            <input type="number" id="rotZNum" min="-180" max="180" value="0" onchange="onRotNum('Z')" style="width:60px;text-align:center;font-family:monospace">
-          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem"><label style="color:#3b82f6;font-weight:700">Eixo Z</label><span id="rotZVal" style="font-family:monospace;color:#60a5fa">0.0°</span></div>
+          <div style="display:flex;align-items:center;gap:.4rem"><input type="range" id="rotZ" min="-180" max="180" step="1" value="0" oninput="onRotSlider('Z')" style="flex:1"><input type="number" id="rotZNum" value="0" onchange="onRotNum('Z')" style="width:60px;text-align:center;font-family:monospace"></div>
         </div>
-
         <div class="quick-rot-grid">
-          <button onclick="quickRotate('X',-90)">X -90°</button>
-          <button onclick="quickRotate('X',90)">X +90°</button>
-          <button onclick="quickRotate('X',180)">X 180°</button>
-          <button onclick="quickRotate('X',0)" style="color:#fbbf24">X 0°</button>
-          <button onclick="quickRotate('Y',-90)">Y -90°</button>
-          <button onclick="quickRotate('Y',90)">Y +90°</button>
-          <button onclick="quickRotate('Y',180)">Y 180°</button>
-          <button onclick="quickRotate('Y',0)" style="color:#fbbf24">Y 0°</button>
-          <button onclick="quickRotate('Z',-90)">Z -90°</button>
-          <button onclick="quickRotate('Z',90)">Z +90°</button>
-          <button onclick="quickRotate('Z',180)">Z 180°</button>
-          <button onclick="quickRotate('Z',0)" style="color:#fbbf24">Z 0°</button>
+          <button onclick="quickRotate('X',-90)">X -90°</button><button onclick="quickRotate('X',90)">X +90°</button><button onclick="quickRotate('X',180)">X 180°</button><button onclick="quickRotate('X',0)" style="color:#fbbf24">X 0°</button>
+          <button onclick="quickRotate('Y',-90)">Y -90°</button><button onclick="quickRotate('Y',90)">Y +90°</button><button onclick="quickRotate('Y',180)">Y 180°</button><button onclick="quickRotate('Y',0)" style="color:#fbbf24">Y 0°</button>
+          <button onclick="quickRotate('Z',-90)">Z -90°</button><button onclick="quickRotate('Z',90)">Z +90°</button><button onclick="quickRotate('Z',180)">Z 180°</button><button onclick="quickRotate('Z',0)" style="color:#fbbf24">Z 0°</button>
         </div>
       </div>
-
       <div class="panel">
         <div class="panel-title" style="justify-content:space-between">
           <span><i class="fa-solid fa-arrows-up-down-left-right" style="color:#34d399"></i> Posição (m)</span>
           <button class="icon-btn" onclick="resetPosition()" title="Zerar"><i class="fa-solid fa-rotate-left"></i></button>
         </div>
-
         <div style="margin-bottom:.5rem">
-          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem">
-            <label style="color:#ef4444;font-weight:700">X</label><span id="posXVal" style="font-family:monospace;color:#34d399">0.00 m</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:.4rem">
-            <input type="range" id="posX" min="-100" max="100" step="0.1" value="0" oninput="onPosSlider('X')" style="flex:1">
-            <input type="number" id="posXNum" step="0.1" value="0" onchange="onPosNum('X')" style="width:60px;text-align:center;font-family:monospace">
-          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem"><label style="color:#ef4444;font-weight:700">X</label><span id="posXVal" style="font-family:monospace;color:#34d399">0.00 m</span></div>
+          <div style="display:flex;align-items:center;gap:.4rem"><input type="range" id="posX" min="-100" max="100" step="0.1" value="0" oninput="onPosSlider('X')" style="flex:1"><input type="number" id="posXNum" step="0.1" value="0" onchange="onPosNum('X')" style="width:60px;text-align:center;font-family:monospace"></div>
         </div>
-
         <div style="margin-bottom:.5rem">
-          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem">
-            <label style="color:#10b981;font-weight:700">Y</label><span id="posYVal" style="font-family:monospace;color:#34d399">0.00 m</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:.4rem">
-            <input type="range" id="posY" min="-100" max="100" step="0.1" value="0" oninput="onPosSlider('Y')" style="flex:1">
-            <input type="number" id="posYNum" step="0.1" value="0" onchange="onPosNum('Y')" style="width:60px;text-align:center;font-family:monospace">
-          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem"><label style="color:#10b981;font-weight:700">Y</label><span id="posYVal" style="font-family:monospace;color:#34d399">0.00 m</span></div>
+          <div style="display:flex;align-items:center;gap:.4rem"><input type="range" id="posY" min="-100" max="100" step="0.1" value="0" oninput="onPosSlider('Y')" style="flex:1"><input type="number" id="posYNum" step="0.1" value="0" onchange="onPosNum('Y')" style="width:60px;text-align:center;font-family:monospace"></div>
         </div>
-
         <div>
-          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem">
-            <label style="color:#3b82f6;font-weight:700">Z</label><span id="posZVal" style="font-family:monospace;color:#34d399">0.00 m</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:.4rem">
-            <input type="range" id="posZ" min="-100" max="100" step="0.1" value="0" oninput="onPosSlider('Z')" style="flex:1">
-            <input type="number" id="posZNum" step="0.1" value="0" onchange="onPosNum('Z')" style="width:60px;text-align:center;font-family:monospace">
-          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.2rem"><label style="color:#3b82f6;font-weight:700">Z</label><span id="posZVal" style="font-family:monospace;color:#34d399">0.00 m</span></div>
+          <div style="display:flex;align-items:center;gap:.4rem"><input type="range" id="posZ" min="-100" max="100" step="0.1" value="0" oninput="onPosSlider('Z')" style="flex:1"><input type="number" id="posZNum" step="0.1" value="0" onchange="onPosNum('Z')" style="width:60px;text-align:center;font-family:monospace"></div>
         </div>
       </div>
-
       <div class="panel">
         <div class="panel-title"><i class="fa-solid fa-bolt"></i> Ações Rápidas</div>
-        <button onclick="alignBaseToGrid()" style="width:100%;background:linear-gradient(135deg,#059669,#0d9488);color:#fff;padding:.5rem;font-weight:700;margin-bottom:.35rem">
-          <i class="fa-solid fa-layer-group"></i> Alinhar Base ao Solo (Z=0)
-        </button>
-        <button onclick="centerOnGrid()" style="width:100%;padding:.5rem;font-weight:700;margin-bottom:.35rem">
-          <i class="fa-solid fa-crosshairs"></i> Centralizar na Origem
-        </button>
-        <button onclick="resetTransform()" style="width:100%;color:#fbbf24;padding:.5rem;font-weight:700">
-          <i class="fa-solid fa-rotate-left"></i> Resetar Tudo
-        </button>
+        <button onclick="alignBaseToGrid()" style="width:100%;background:linear-gradient(135deg,#059669,#0d9488);color:#fff;padding:.5rem;font-weight:700;margin-bottom:.35rem"><i class="fa-solid fa-layer-group"></i> Alinhar Base (Z=0)</button>
+        <button onclick="centerOnGrid()" style="width:100%;padding:.5rem;font-weight:700;margin-bottom:.35rem"><i class="fa-solid fa-crosshairs"></i> Centralizar na Origem</button>
+        <button onclick="resetTransform()" style="width:100%;color:#fbbf24;padding:.5rem;font-weight:700"><i class="fa-solid fa-rotate-left"></i> Resetar Tudo</button>
       </div>
     </div>
   </div>
@@ -424,8 +370,8 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
   <div id="tab-content-appearance" class="tab-content">
     <div class="panel">
       <div class="panel-title" style="justify-content:space-between">
-        <span><i class="fa-solid fa-palette"></i> Cor do Elemento</span>
-        <button class="icon-btn" onclick="applyRandomColor()" title="Aleatória"><i class="fa-solid fa-dice"></i></button>
+        <span><i class="fa-solid fa-palette"></i> Cor</span>
+        <button class="icon-btn" onclick="applyRandomColor()"><i class="fa-solid fa-dice"></i></button>
       </div>
       <div style="display:flex;gap:.5rem;margin-bottom:.6rem">
         <input type="color" id="colorPicker" value="#3b82f6" oninput="syncColorHex()" style="width:3.5rem;flex:none">
@@ -433,49 +379,30 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
       </div>
       <div id="colorSwatches" style="display:grid;grid-template-columns:repeat(8,1fr);gap:.25rem;margin-bottom:.6rem"></div>
       <div style="border-top:1px solid #1e293b;padding-top:.5rem">
-        <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.25rem">
-          <span>Opacidade</span><span id="opacityVal" style="font-family:monospace;color:#34d399">92%</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.25rem"><span>Opacidade</span><span id="opacityVal" style="font-family:monospace;color:#34d399">92%</span></div>
         <input type="range" id="opacityRange" min="10" max="100" value="92" oninput="updateOpacityLabel()">
       </div>
     </div>
-
     <div class="panel">
       <div class="panel-title" style="justify-content:space-between">
         <span><i class="fa-solid fa-image" style="color:#0891b2"></i> Texturas</span>
         <span id="texCountBadge" class="count-badge">0</span>
       </div>
-
       <button class="tex-upload-btn" onclick="document.getElementById('textureInput').click()">
         <i class="fa-solid fa-upload"></i> Importar Textura
         <input type="file" id="textureInput" accept="image/*" multiple style="display:none" onchange="handleTextureUpload(event)">
       </button>
-
-      <div id="textureEmpty" class="tex-empty">
-        <i class="fa-solid fa-image" style="font-size:1.5rem;display:block;margin-bottom:.3rem;opacity:.4"></i>
-        Nenhuma textura importada.<br><span style="font-size:.6rem">Aceita JPG, PNG, WEBP</span>
-      </div>
-
+      <div id="textureEmpty" class="tex-empty"><i class="fa-solid fa-image" style="font-size:1.5rem;display:block;margin-bottom:.3rem;opacity:.4"></i>Nenhuma textura importada.<br><span style="font-size:.6rem">Aceita JPG, PNG, WEBP</span></div>
       <div id="textureGrid" class="texture-grid"></div>
-
       <div id="textureControls" style="display:none;margin-top:.5rem;padding-top:.5rem;border-top:1px solid #1e293b">
-        <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.25rem">
-          <span>Repetição U (horizontal)</span><span id="texRepeatUVal" style="font-family:monospace;color:#22d3ee">1.0</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.25rem"><span>Repetição U</span><span id="texRepeatUVal" style="font-family:monospace;color:#22d3ee">1.0</span></div>
         <input type="range" id="texRepeatU" min="0.1" max="20" step="0.1" value="1" oninput="updateTextureLabels()" style="margin-bottom:.5rem">
-
-        <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.25rem">
-          <span>Repetição V (vertical)</span><span id="texRepeatVVal" style="font-family:monospace;color:#22d3ee">1.0</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.25rem"><span>Repetição V</span><span id="texRepeatVVal" style="font-family:monospace;color:#22d3ee">1.0</span></div>
         <input type="range" id="texRepeatV" min="0.1" max="20" step="0.1" value="1" oninput="updateTextureLabels()" style="margin-bottom:.5rem">
-
-        <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.25rem">
-          <span>Rotação da textura</span><span id="texRotationVal" style="font-family:monospace;color:#22d3ee">0°</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#94a3b8;margin-bottom:.25rem"><span>Rotação</span><span id="texRotationVal" style="font-family:monospace;color:#22d3ee">0°</span></div>
         <input type="range" id="texRotation" min="0" max="360" step="1" value="0" oninput="updateTextureLabels()">
       </div>
     </div>
-
     <div class="panel">
       <div class="panel-title"><i class="fa-solid fa-bullseye"></i> Aplicar a</div>
       <select id="applyScope" onchange="updateScopeUI()" style="margin-bottom:.4rem">
@@ -485,23 +412,12 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
         <option value="storey">Por pavimento</option>
         <option value="type">Por tipo IFC</option>
       </select>
-      <div id="scopeExtra" style="display:none">
-        <select id="scopeValue"><option value="">— Todos —</option></select>
-      </div>
+      <div id="scopeExtra" style="display:none"><select id="scopeValue"><option value="">— Todos —</option></select></div>
     </div>
-
-    <button onclick="applyColorFromUI()" style="width:100%;background:linear-gradient(135deg,#db2777,#c026d3);color:#fff;padding:.6rem;font-weight:700;margin-bottom:.4rem">
-      <i class="fa-solid fa-paint-brush"></i> Aplicar Cor
-    </button>
-    <button onclick="applyTextureFromUI()" style="width:100%;background:linear-gradient(135deg,#0891b2,#0e7490);color:#fff;padding:.6rem;font-weight:700;margin-bottom:.4rem">
-      <i class="fa-solid fa-image"></i> Aplicar Textura
-    </button>
-    <button onclick="removeTextureFromUI()" style="width:100%;background:#334155;color:#e2e8f0;padding:.5rem;font-weight:700;margin-bottom:.4rem">
-      <i class="fa-solid fa-eraser"></i> Remover Textura do Escopo
-    </button>
-    <button onclick="resetColors()" style="width:100%;color:#fbbf24;padding:.5rem;font-weight:700">
-      <i class="fa-solid fa-rotate-left"></i> Restaurar Cores e Texturas
-    </button>
+    <button onclick="applyColorFromUI()" style="width:100%;background:linear-gradient(135deg,#db2777,#c026d3);color:#fff;padding:.6rem;font-weight:700;margin-bottom:.4rem"><i class="fa-solid fa-paint-brush"></i> Aplicar Cor</button>
+    <button onclick="applyTextureFromUI()" style="width:100%;background:linear-gradient(135deg,#0891b2,#0e7490);color:#fff;padding:.6rem;font-weight:700;margin-bottom:.4rem"><i class="fa-solid fa-image"></i> Aplicar Textura</button>
+    <button onclick="removeTextureFromUI()" style="width:100%;background:#334155;color:#e2e8f0;padding:.5rem;font-weight:700;margin-bottom:.4rem"><i class="fa-solid fa-eraser"></i> Remover Textura</button>
+    <button onclick="resetColors()" style="width:100%;color:#fbbf24;padding:.5rem;font-weight:700"><i class="fa-solid fa-rotate-left"></i> Restaurar Cores</button>
   </div>
 
   <div id="tab-content-dimension" class="tab-content">
@@ -510,71 +426,35 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
         <span><i class="fa-solid fa-ruler-combined"></i> Dimensões</span>
         <span id="dimElemName" style="font-size:.65rem;color:#64748b">—</span>
       </div>
-      <div id="dimEmpty" style="text-align:center;padding:1rem;color:#64748b;font-size:.7rem">
-        Selecione um elemento no 3D ou na árvore.
-      </div>
+      <div id="dimEmpty" style="text-align:center;padding:1rem;color:#64748b;font-size:.7rem">Selecione um elemento.</div>
       <div id="dimContent" style="display:none">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.375rem">
-          <div style="background:#0f172a;border-left:3px solid #ef4444;padding:.5rem;border-radius:.375rem">
-            <div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">X · Comp.</div>
-            <div><span id="dimX" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m</span></div>
-          </div>
-          <div style="background:#0f172a;border-left:3px solid #10b981;padding:.5rem;border-radius:.375rem">
-            <div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Y · Prof.</div>
-            <div><span id="dimY" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m</span></div>
-          </div>
-          <div style="background:#0f172a;border-left:3px solid #3b82f6;padding:.5rem;border-radius:.375rem">
-            <div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Z · Altura</div>
-            <div><span id="dimZ" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m</span></div>
-          </div>
-          <div style="background:#0f172a;border-left:3px solid #f59e0b;padding:.5rem;border-radius:.375rem">
-            <div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Perímetro</div>
-            <div><span id="dimPerimeter" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m</span></div>
-          </div>
-          <div style="background:#0f172a;border-left:3px solid #22c55e;padding:.5rem;border-radius:.375rem">
-            <div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Área</div>
-            <div><span id="dimAreaMesh" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m²</span></div>
-          </div>
-          <div style="background:#0f172a;border-left:3px solid #a855f7;padding:.5rem;border-radius:.375rem">
-            <div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Volume</div>
-            <div><span id="dimVolume" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m³</span></div>
-          </div>
+          <div style="background:#0f172a;border-left:3px solid #ef4444;padding:.5rem;border-radius:.375rem"><div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">X · Comp.</div><div><span id="dimX" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m</span></div></div>
+          <div style="background:#0f172a;border-left:3px solid #10b981;padding:.5rem;border-radius:.375rem"><div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Y · Prof.</div><div><span id="dimY" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m</span></div></div>
+          <div style="background:#0f172a;border-left:3px solid #3b82f6;padding:.5rem;border-radius:.375rem"><div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Z · Altura</div><div><span id="dimZ" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m</span></div></div>
+          <div style="background:#0f172a;border-left:3px solid #f59e0b;padding:.5rem;border-radius:.375rem"><div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Perímetro</div><div><span id="dimPerimeter" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m</span></div></div>
+          <div style="background:#0f172a;border-left:3px solid #22c55e;padding:.5rem;border-radius:.375rem"><div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Área</div><div><span id="dimAreaMesh" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m²</span></div></div>
+          <div style="background:#0f172a;border-left:3px solid #a855f7;padding:.5rem;border-radius:.375rem"><div style="font-size:.55rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Volume</div><div><span id="dimVolume" style="font-size:.9rem;font-weight:800;font-family:monospace">0.00</span><span style="font-size:.6rem;color:#64748b"> m³</span></div></div>
         </div>
       </div>
     </div>
-    <button onclick="measureWholeModel()" style="width:100%;background:#2563eb;color:#fff;padding:.6rem;font-weight:700;margin-bottom:.75rem">
-      <i class="fa-solid fa-calculator"></i> Totalizar Modelo
-    </button>
+    <button onclick="measureWholeModel()" style="width:100%;background:#2563eb;color:#fff;padding:.6rem;font-weight:700;margin-bottom:.75rem"><i class="fa-solid fa-calculator"></i> Totalizar Modelo</button>
     <div class="panel">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
-        <div style="text-align:center">
-          <div style="font-size:.6rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Área Total</div>
-          <div><span id="totalArea" style="font-size:1rem;font-weight:800;font-family:monospace;color:#22c55e">—</span><span style="font-size:.6rem;color:#64748b"> m²</span></div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:.6rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Volume Total</div>
-          <div><span id="totalVolume" style="font-size:1rem;font-weight:800;font-family:monospace;color:#a855f7">—</span><span style="font-size:.6rem;color:#64748b"> m³</span></div>
-        </div>
+        <div style="text-align:center"><div style="font-size:.6rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Área Total</div><div><span id="totalArea" style="font-size:1rem;font-weight:800;font-family:monospace;color:#22c55e">—</span><span style="font-size:.6rem;color:#64748b"> m²</span></div></div>
+        <div style="text-align:center"><div style="font-size:.6rem;color:#94a3b8;text-transform:uppercase;font-weight:700">Volume Total</div><div><span id="totalVolume" style="font-size:1rem;font-weight:800;font-family:monospace;color:#a855f7">—</span><span style="font-size:.6rem;color:#64748b"> m³</span></div></div>
       </div>
     </div>
     <div id="dimByDiscipline"></div>
-    <button onclick="exportDimensionsCSV()" style="width:100%;background:linear-gradient(135deg,#ea580c,#d97706);color:#fff;padding:.6rem;font-weight:700;margin-top:.75rem">
-      <i class="fa-solid fa-file-excel"></i> Exportar Dimensionamento CSV
-    </button>
+    <button onclick="exportDimensionsCSV()" style="width:100%;background:linear-gradient(135deg,#ea580c,#d97706);color:#fff;padding:.6rem;font-weight:700;margin-top:.75rem"><i class="fa-solid fa-file-excel"></i> Exportar CSV</button>
   </div>
 
   <div id="tab-content-rules" class="tab-content">
     <div class="panel">
       <div class="panel-title"><i class="fa-solid fa-shield-halved"></i> Tolerâncias (mm)</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
-        <div>
-          <label style="color:#ef4444;display:block;font-size:.65rem;font-weight:700">Duro</label>
-          <input type="number" id="tolHard" value="0">
-        </div>
-        <div>
-          <label style="color:#fbbf24;display:block;font-size:.65rem;font-weight:700">Crítico</label>
-          <input type="number" id="tolCritical" value="25">
-        </div>
+        <div><label style="color:#ef4444;display:block;font-size:.65rem;font-weight:700">Duro</label><input type="number" id="tolHard" value="0"></div>
+        <div><label style="color:#fbbf24;display:block;font-size:.65rem;font-weight:700">Crítico</label><input type="number" id="tolCritical" value="25"></div>
       </div>
     </div>
     <div class="panel-title"><i class="fa-solid fa-list-check"></i> Regras por Par</div>
@@ -587,7 +467,6 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
     <canvas id="bimCanvas"></canvas>
     <div id="clashMarkersContainer"></div>
     <div id="axisCompass"></div>
-
     <div class="toolbar">
       <button onclick="resetCameraView('iso')"><i class="fa-solid fa-cube"></i> Iso</button>
       <button onclick="resetCameraView('top')"><i class="fa-solid fa-arrow-up"></i></button>
@@ -599,7 +478,6 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
       <button onclick="toggleWireframe()"><i class="fa-solid fa-border-all"></i></button>
       <button onclick="showAllElements()"><i class="fa-solid fa-eye"></i></button>
     </div>
-
     <div class="status-bar">
       <span class="status-dot"></span>
       <span id="viewportStatusText">Motor 3D Ativo</span>
@@ -615,36 +493,22 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
 
 <aside class="right" id="rightSidebar">
   <div class="tabs">
-    <button id="tab-btn-clashes" class="active" onclick="switchRightTab('clashes')">
-      <i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b"></i> Conflitos (<span id="clashCountBadge">0</span>)
-    </button>
-    <button id="tab-btn-dash" onclick="switchRightTab('dash')">
-      <i class="fa-solid fa-chart-pie" style="color:#10b981"></i> Dashboard
-    </button>
+    <button id="tab-btn-clashes" class="active" onclick="switchRightTab('clashes')"><i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b"></i> Conflitos (<span id="clashCountBadge">0</span>)</button>
+    <button id="tab-btn-dash" onclick="switchRightTab('dash')"><i class="fa-solid fa-chart-pie" style="color:#10b981"></i> Dashboard</button>
   </div>
-
   <div id="tab-content-clashes" class="tab-content active" style="padding:0">
     <div style="padding:.5rem;border-bottom:1px solid #1e293b;background:rgba(2,6,23,.4);display:flex;gap:.4rem">
       <select id="clashSevFilter" onchange="updateClashListUI()" style="flex:1;font-size:.65rem">
-        <option value="ALL">Severidades</option>
-        <option value="CRITICAL">Crítico</option>
-        <option value="HIGH">Alto</option>
-        <option value="MEDIUM">Médio</option>
-        <option value="LOW">Baixo</option>
+        <option value="ALL">Severidades</option><option value="CRITICAL">Crítico</option><option value="HIGH">Alto</option><option value="MEDIUM">Médio</option><option value="LOW">Baixo</option>
       </select>
       <select id="clashStatusFilter" onchange="updateClashListUI()" style="flex:1;font-size:.65rem">
-        <option value="ALL">Status</option>
-        <option value="Novo">Novo</option>
-        <option value="Resolvido">Resolvido</option>
+        <option value="ALL">Status</option><option value="Novo">Novo</option><option value="Resolvido">Resolvido</option>
       </select>
     </div>
     <div id="clashesList" style="flex:1;overflow-y:auto;padding:.5rem">
-      <div style="text-align:center;padding:2rem 1rem;color:#64748b;font-size:.75rem;border:1px dashed #1e293b;border-radius:.5rem">
-        Nenhum teste de conflito executado.
-      </div>
+      <div style="text-align:center;padding:2rem 1rem;color:#64748b;font-size:.75rem;border:1px dashed #1e293b;border-radius:.5rem">Nenhum teste executado.</div>
     </div>
   </div>
-
   <div id="tab-content-dash" class="tab-content">
     <div class="kpi-grid">
       <div class="kpi"><span class="label">Total</span><span class="value" id="dashTotal">0</span></div>
@@ -652,14 +516,8 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
       <div class="kpi"><span class="label" style="color:#34d399">Resolvidos</span><span class="value" id="dashResolved" style="color:#34d399">0</span></div>
       <div class="kpi"><span class="label" style="color:#fbbf24">Pendentes</span><span class="value" id="dashPending" style="color:#fbbf24">0</span></div>
     </div>
-    <div class="chart-container">
-      <h4>Conflitos por Disciplina</h4>
-      <div class="chart-box"><canvas id="chartDisciplines"></canvas></div>
-    </div>
-    <div class="chart-container">
-      <h4>Conflitos por Pavimento</h4>
-      <div class="chart-box"><canvas id="chartFloors"></canvas></div>
-    </div>
+    <div class="chart-container"><h4>Conflitos por Disciplina</h4><div class="chart-box"><canvas id="chartDisciplines"></canvas></div></div>
+    <div class="chart-container"><h4>Conflitos por Pavimento</h4><div class="chart-box"><canvas id="chartFloors"></canvas></div></div>
   </div>
 </aside>
 </div>
@@ -691,8 +549,8 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
   <div class="modal-box" style="text-align:center">
     <div style="font-size:2.5rem;margin-bottom:.5rem">🔒</div>
     <h2 id="licTitle">Período de Teste Expirado</h2>
-    <p id="licSubtitle">Seu teste gratuito de 15 dias chegou ao fim. Insira uma chave APAVAN.</p>
-    <input type="text" id="licenseInput" placeholder="APAVAN-XXXXX-XXXX" autocomplete="off" spellcheck="false">
+    <p id="licSubtitle">Seu teste gratuito de 15 dias chegou ao fim.\nInsira uma chave de licença APAVAN.</p>
+    <input type="text" id="licenseInput" placeholder="APAVAN-XXXXX-XXXXXXXX-XXXXXXXX" autocomplete="off" spellcheck="false">
     <button class="btn-full" onclick="submitLicense()"><i class="fa-solid fa-key"></i> Ativar Licença</button>
     <p id="licenseMsg" style="min-height:16px;font-size:.7rem;margin-top:.5rem"></p>
     <div class="contact">
@@ -704,47 +562,19 @@ footer{height:1.5rem;background:#020617;border-top:1px solid #1e293b;padding:0 1
 </div>
 
 <div class="section-panel" id="sectionPanel">
-  <h3>
-    <i class="fa-solid fa-scissors" style="color:#a78bfa"></i> Plano de Corte
-    <button class="close-btn" onclick="toggleSectionPanel()"><i class="fa-solid fa-xmark"></i></button>
-  </h3>
-
+  <h3><i class="fa-solid fa-scissors" style="color:#a78bfa"></i> Plano de Corte <button class="close-btn" onclick="toggleSectionPanel()"><i class="fa-solid fa-xmark"></i></button></h3>
   <div class="section-axis">
-    <div class="section-axis-header">
-      <span class="axis-name ax-x">X</span>
-      <label><input type="checkbox" id="secX-enabled" onchange="applySectionPlanes()"> Ativo</label>
-      <button class="flip-btn" id="secX-flip" onclick="flipSection('X')"><i class="fa-solid fa-arrows-rotate"></i></button>
-    </div>
-    <div class="section-slider">
-      <input type="range" id="secX-pos" min="-30" max="30" step="0.1" value="0" oninput="onSectionSlider('X')">
-      <span class="val" id="secX-val">0.00 m</span>
-    </div>
+    <div class="section-axis-header"><span class="axis-name ax-x">X</span><label><input type="checkbox" id="secX-enabled" onchange="applySectionPlanes()"> Ativo</label><button class="flip-btn" id="secX-flip" onclick="flipSection('X')"><i class="fa-solid fa-arrows-rotate"></i></button></div>
+    <div class="section-slider"><input type="range" id="secX-pos" min="-30" max="30" step="0.1" value="0" oninput="onSectionSlider('X')"><span class="val" id="secX-val">0.00 m</span></div>
   </div>
-
   <div class="section-axis">
-    <div class="section-axis-header">
-      <span class="axis-name ax-y">Y</span>
-      <label><input type="checkbox" id="secY-enabled" onchange="applySectionPlanes()"> Ativo</label>
-      <button class="flip-btn" id="secY-flip" onclick="flipSection('Y')"><i class="fa-solid fa-arrows-rotate"></i></button>
-    </div>
-    <div class="section-slider">
-      <input type="range" id="secY-pos" min="-30" max="30" step="0.1" value="0" oninput="onSectionSlider('Y')">
-      <span class="val" id="secY-val">0.00 m</span>
-    </div>
+    <div class="section-axis-header"><span class="axis-name ax-y">Y</span><label><input type="checkbox" id="secY-enabled" onchange="applySectionPlanes()"> Ativo</label><button class="flip-btn" id="secY-flip" onclick="flipSection('Y')"><i class="fa-solid fa-arrows-rotate"></i></button></div>
+    <div class="section-slider"><input type="range" id="secY-pos" min="-30" max="30" step="0.1" value="0" oninput="onSectionSlider('Y')"><span class="val" id="secY-val">0.00 m</span></div>
   </div>
-
   <div class="section-axis">
-    <div class="section-axis-header">
-      <span class="axis-name ax-z">Z</span>
-      <label><input type="checkbox" id="secZ-enabled" onchange="applySectionPlanes()"> Ativo</label>
-      <button class="flip-btn" id="secZ-flip" onclick="flipSection('Z')"><i class="fa-solid fa-arrows-rotate"></i></button>
-    </div>
-    <div class="section-slider">
-      <input type="range" id="secZ-pos" min="-30" max="30" step="0.1" value="0" oninput="onSectionSlider('Z')">
-      <span class="val" id="secZ-val">0.00 m</span>
-    </div>
+    <div class="section-axis-header"><span class="axis-name ax-z">Z</span><label><input type="checkbox" id="secZ-enabled" onchange="applySectionPlanes()"> Ativo</label><button class="flip-btn" id="secZ-flip" onclick="flipSection('Z')"><i class="fa-solid fa-arrows-rotate"></i></button></div>
+    <div class="section-slider"><input type="range" id="secZ-pos" min="-30" max="30" step="0.1" value="0" oninput="onSectionSlider('Z')"><span class="val" id="secZ-val">0.00 m</span></div>
   </div>
-
   <div class="section-actions">
     <button class="primary" onclick="fitSectionRangeToModel()"><i class="fa-solid fa-expand"></i> Ajustar</button>
     <button onclick="clearAllSections()"><i class="fa-solid fa-rotate-left"></i> Limpar</button>
@@ -779,29 +609,148 @@ var SafeStorage = (function () {
 })();
 
 /* ============================================================
-   LICENÇA
+   LICENÇA v2 — Formato: APAVAN-CLIENTE-VALIDADE-ASSINATURA
    ============================================================ */
-var LICENSE = { TRIAL_DAYS: 15, KEY_FIRST_RUN: 'apbim_v1_first_run', KEY_LICENSE: 'apbim_v1_license', SECRET: 'APAVAN-2024-BIM-AUTH-V1' };
-function licenseCheck(payload) { var s = payload + LICENSE.SECRET, h = 0; for (var i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0; return Math.abs(h).toString(36).toUpperCase().padStart(4, '0').slice(-4); }
-function licenseIsValid(key) { if (typeof key !== 'string') return false; var k = key.toUpperCase().trim(), p = k.split('-'); if (p.length < 3 || p[0] !== 'APAVAN') return false; return licenseCheck(p.slice(1, -1).join('-')) === p[p.length - 1]; }
-window.generateLicenseKey = function (payload) { var c = String(payload).toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12); if (!c) return null; return 'APAVAN-' + c + '-' + licenseCheck(c); };
-function licenseFirstRun() { var v = SafeStorage.getItem(LICENSE.KEY_FIRST_RUN); if (!v) { v = Date.now().toString(); SafeStorage.setItem(LICENSE.KEY_FIRST_RUN, v); } return parseInt(v, 10); }
+var LICENSE = {
+  TRIAL_DAYS: 15,
+  KEY_FIRST_RUN: 'apbim_v2_first_run',
+  KEY_LICENSE: 'apbim_v2_license',
+  _P1: 'APAVAN', _P2: '-BIM-', _P3: '2024',
+  _P4: '-SECRET-', _P5: 'V2-9F3B7D2E4A1C6E8B'
+};
+function _getSecret() { return LICENSE._P1 + LICENSE._P2 + LICENSE._P3 + LICENSE._P4 + LICENSE._P5; }
+function _sign(payload) {
+  var s = payload + '|' + _getSecret();
+  var h1 = 0, h2 = 0, h3 = 0;
+  for (var i = 0; i < s.length; i++) {
+    var c = s.charCodeAt(i);
+    h1 = ((h1 << 5) - h1 + c + i * 3) | 0;
+    h2 = ((h2 << 7) - h2 + c * 31 + i) | 0;
+    h3 = ((h3 << 3) - h3 + c * 17 - i * 7) | 0;
+  }
+  var out = Math.abs(h1).toString(36) + Math.abs(h2).toString(36) + Math.abs(h3).toString(36);
+  return out.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8).padStart(8, '0');
+}
+function parseLicenseKey(key) {
+  if (typeof key !== 'string') return null;
+  var k = key.toUpperCase().trim();
+  var parts = k.split('-');
+  if (parts.length !== 4) return null;
+  if (parts[0] !== 'APAVAN') return null;
+  var client = parts[1], expiry = parts[2], sig = parts[3];
+  if (!/^[A-Z0-9]{4,12}$/.test(client)) return null;
+  if (expiry !== 'PERM' && !/^\d{8}$/.test(expiry)) return null;
+  if (!/^[A-Z0-9]{8}$/.test(sig)) return null;
+  var expectedSig = _sign(client + '|' + expiry);
+  if (expectedSig !== sig) return null;
+  var result = { valid: true, client: client, expiry: expiry, permanent: expiry === 'PERM', expiryDate: null, key: k };
+  if (expiry !== 'PERM') {
+    var y = parseInt(expiry.slice(0, 4), 10), m = parseInt(expiry.slice(4, 6), 10), d = parseInt(expiry.slice(6, 8), 10);
+    if (m < 1 || m > 12 || d < 1 || d > 31) return null;
+    result.expiryDate = new Date(y, m - 1, d, 23, 59, 59);
+    if (result.expiryDate.getTime() < Date.now()) { result.valid = false; result.expired = true; }
+  }
+  return result;
+}
+function licenseFirstRun() {
+  var v = SafeStorage.getItem(LICENSE.KEY_FIRST_RUN);
+  if (!v) { v = Date.now().toString(); SafeStorage.setItem(LICENSE.KEY_FIRST_RUN, v); }
+  return parseInt(v, 10);
+}
 function licenseDaysLeft() { return Math.max(0, LICENSE.TRIAL_DAYS - Math.floor((Date.now() - licenseFirstRun()) / 86400000)); }
-function getLicenseState() { var s = SafeStorage.getItem(LICENSE.KEY_LICENSE); if (s && licenseIsValid(s)) return { licensed: true, daysLeft: Infinity, key: s }; var d = licenseDaysLeft(); return { licensed: false, daysLeft: d, valid: d > 0 }; }
-function activateLicense(key) { if (!licenseIsValid(key)) return false; SafeStorage.setItem(LICENSE.KEY_LICENSE, key.toUpperCase().trim()); return true; }
+function getLicenseState() {
+  var saved = SafeStorage.getItem(LICENSE.KEY_LICENSE);
+  if (saved) {
+    var parsed = parseLicenseKey(saved);
+    if (parsed && parsed.valid) return { licensed: true, info: parsed, key: saved };
+    if (parsed && parsed.expired) return { licensed: false, expired: true, info: parsed, daysLeft: 0 };
+  }
+  var daysLeft = licenseDaysLeft();
+  return { licensed: false, daysLeft: daysLeft, valid: daysLeft > 0 };
+}
+function activateLicense(key) {
+  var parsed = parseLicenseKey(key);
+  if (!parsed || !parsed.valid) return false;
+  SafeStorage.setItem(LICENSE.KEY_LICENSE, key.toUpperCase().trim());
+  return true;
+}
 function submitLicense() {
   var inp = document.getElementById('licenseInput'), msg = document.getElementById('licenseMsg');
   var key = (inp.value || '').trim();
-  if (!key) { msg.innerText = 'Digite uma chave.'; msg.style.color = '#f87171'; return; }
-  if (activateLicense(key)) { msg.innerText = '✓ Licença ativada! Recarregando...'; msg.style.color = '#34d399'; setTimeout(function () { location.reload(); }, 800); }
-  else { msg.innerText = 'Chave inválida.'; msg.style.color = '#f87171'; }
+  if (!key) { msg.innerText = 'Digite uma chave de licença.'; msg.style.color = '#f87171'; return; }
+  var parsed = parseLicenseKey(key);
+  if (!parsed) { msg.innerText = 'Chave inválida. Verifique se digitou corretamente.'; msg.style.color = '#f87171'; return; }
+  if (parsed.expired) { msg.innerText = 'Esta chave expirou em ' + parsed.expiryDate.toLocaleDateString('pt-BR') + '.'; msg.style.color = '#f87171'; return; }
+  if (activateLicense(key)) {
+    msg.innerText = '✓ Licença ativada para "' + parsed.client + '". Recarregando...';
+    msg.style.color = '#34d399';
+    setTimeout(function () { location.reload(); }, 1000);
+  } else { msg.innerText = 'Chave inválida.'; msg.style.color = '#f87171'; }
+}
+if (location.search.indexOf('reset-trial') >= 0) {
+  SafeStorage.removeItem(LICENSE.KEY_FIRST_RUN);
+  SafeStorage.removeItem(LICENSE.KEY_LICENSE);
+}
+function showLicenseModal() {
+  var st = getLicenseState();
+  var ov = document.getElementById('licenseOverlay');
+  var title = document.getElementById('licTitle');
+  var subtitle = document.getElementById('licSubtitle');
+  if (st.licensed) {
+    title.innerText = 'Licença Ativa';
+    subtitle.innerText = 'Cliente: ' + st.info.client + '\nValidade: ' + (st.info.permanent ? 'Permanente' : st.info.expiryDate.toLocaleDateString('pt-BR'));
+  } else if (st.expired) {
+    title.innerText = 'Licença Expirada';
+    subtitle.innerText = 'Cliente: ' + st.info.client + '\nExpirou em: ' + st.info.expiryDate.toLocaleDateString('pt-BR');
+  } else {
+    title.innerText = 'Ativar Licença';
+    subtitle.innerText = 'Trial: ' + st.daysLeft + ' dia(s) restante(s).\nInsira uma chave APAVAN.';
+  }
+  ov.classList.add('show');
 }
 function applyLicenseGate() {
-  var st = getLicenseState(), ov = document.getElementById('licenseOverlay');
-  var badge = document.getElementById('trialBadge'), badgeDays = document.getElementById('trialDays');
-  if (st.licensed) { ov.classList.remove('show'); badge.style.display = 'none'; return true; }
-  if (st.valid) { ov.classList.remove('show'); badge.style.display = 'inline'; badgeDays.innerText = st.daysLeft; return true; }
-  ov.classList.add('show'); badge.style.display = 'none';
+  var st = getLicenseState();
+  var ov = document.getElementById('licenseOverlay');
+  var badge = document.getElementById('licenseBadge');
+  var title = document.getElementById('licTitle');
+  var subtitle = document.getElementById('licSubtitle');
+
+  if (st.licensed) {
+    ov.classList.remove('show');
+    if (badge) {
+      badge.style.display = 'inline';
+      badge.style.background = 'rgba(16,185,129,.15)';
+      badge.style.color = '#34d399';
+      badge.innerHTML = '<i class="fa-solid fa-certificate"></i> ' + st.info.client + (st.info.permanent ? '' : ' • até ' + st.info.expiryDate.toLocaleDateString('pt-BR'));
+    }
+    return true;
+  }
+  if (st.expired) {
+    if (title) title.innerText = 'Licença Expirada';
+    if (subtitle) subtitle.innerText = 'Sua licença para "' + st.info.client + '" expirou em ' + st.info.expiryDate.toLocaleDateString('pt-BR') + '.\nInsira uma nova chave APAVAN.';
+    ov.classList.add('show');
+    if (badge) {
+      badge.style.display = 'inline';
+      badge.style.background = 'rgba(239,68,68,.15)';
+      badge.style.color = '#f87171';
+      badge.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Licença expirada';
+    }
+    return false;
+  }
+  if (st.valid) {
+    ov.classList.remove('show');
+    if (badge) {
+      badge.style.display = 'inline';
+      badge.style.background = 'rgba(245,158,11,.15)';
+      badge.style.color = '#fbbf24';
+      badge.innerHTML = '<i class="fa-solid fa-hourglass-half"></i> Trial: ' + st.daysLeft + 'd';
+    }
+    return true;
+  }
+  if (title) title.innerText = 'Período de Teste Expirado';
+  if (subtitle) subtitle.innerText = 'Seu teste gratuito de 15 dias chegou ao fim.\nInsira uma chave de licença APAVAN.';
+  ov.classList.add('show');
+  if (badge) badge.style.display = 'none';
   return false;
 }
 
@@ -809,6 +758,7 @@ function applyLicenseGate() {
    ESTADO
    ============================================================ */
 var isMobile = function () { return window.matchMedia('(max-width: 900px)').matches; };
+var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 var COLOR_SWATCHES = ['#ef4444','#f97316','#eab308','#22c55e','#10b981','#14b8a6','#06b6d4','#3b82f6','#6366f1','#8b5cf6','#a855f7','#ec4899','#f43f5e','#64748b','#94a3b8','#f8fafc'];
 var DISCIPLINE_COLORS = { ARQUITETURA: '#60a5fa', ESTRUTURA: '#94a3b8', HIDRAULICO: '#22d3ee', ELETRICO: '#fbbf24', HVAC: '#a855f7', INCENDIO: '#ef4444', OUTROS: '#64748b' };
 
@@ -916,10 +866,8 @@ function fitSectionRangeToModel(silent) {
     var range = axis === 'X' ? rx : axis === 'Y' ? ry : rz;
     var ca = axis === 'X' ? c.x : axis === 'Y' ? c.y : c.z;
     var slider = document.getElementById('sec' + axis + '-pos');
-    slider.min = (ca - range).toFixed(2);
-    slider.max = (ca + range).toFixed(2);
-    slider.value = ca;
-    sectionState[axis].position = ca;
+    slider.min = (ca - range).toFixed(2); slider.max = (ca + range).toFixed(2);
+    slider.value = ca; sectionState[axis].position = ca;
     document.getElementById('sec' + axis + '-val').innerText = ca.toFixed(2) + ' m';
   });
   applySectionPlanes();
@@ -1147,15 +1095,11 @@ function removeTextureFromLibrary(texId) {
   state.textures.splice(idx, 1);
   if (state.selectedTextureId === texId) state.selectedTextureId = state.textures.length ? state.textures[0].id : null;
   renderTextureGrid();
-  showViewportStatus('Textura removida.');
 }
 function updateTextureLabels() {
-  var u = document.getElementById('texRepeatU').value;
-  var v = document.getElementById('texRepeatV').value;
-  var r = document.getElementById('texRotation').value;
-  document.getElementById('texRepeatUVal').innerText = parseFloat(u).toFixed(1);
-  document.getElementById('texRepeatVVal').innerText = parseFloat(v).toFixed(1);
-  document.getElementById('texRotationVal').innerText = r + '°';
+  document.getElementById('texRepeatUVal').innerText = parseFloat(document.getElementById('texRepeatU').value).toFixed(1);
+  document.getElementById('texRepeatVVal').innerText = parseFloat(document.getElementById('texRepeatV').value).toFixed(1);
+  document.getElementById('texRotationVal').innerText = document.getElementById('texRotation').value + '°';
 }
 function getSelectedTexture() {
   if (!state.selectedTextureId) return null;
@@ -1171,7 +1115,6 @@ function applyTextureFromUI() {
   var repeatV = parseFloat(document.getElementById('texRepeatV').value) || 1;
   var rotation = parseInt(document.getElementById('texRotation').value) || 0;
   var opacity = parseInt(document.getElementById('opacityRange').value) / 100;
-
   targets.forEach(function (el) {
     if (!el.mesh.material) return;
     if (!el.mesh.userData._matCloned) { el.mesh.material = el.mesh.material.clone(); el.mesh.userData._matCloned = true; }
@@ -1215,7 +1158,7 @@ function removeTextureFromUI() {
 }
 
 /* ============================================================
-   IFC — EXTRAÇÃO (CORRIGIDO para web-ifc 0.0.58)
+   IFC — EXTRAÇÃO
    ============================================================ */
 function refToId(ref) {
   if (ref === null || ref === undefined) return null;
@@ -1241,21 +1184,9 @@ function getIFCName(api, mid, id) {
   try {
     var l = api.GetLine(mid, id, false);
     if (!l) return null;
-    if (l.Name) {
-      var n = l.Name;
-      if (typeof n === 'object' && n.value) return n.value;
-      if (typeof n === 'string') return n;
-    }
-    if (l.ObjectType) {
-      var ot = l.ObjectType;
-      if (typeof ot === 'object' && ot.value) return ot.value;
-      if (typeof ot === 'string') return ot;
-    }
-    if (l.LongName) {
-      var ln = l.LongName;
-      if (typeof ln === 'object' && ln.value) return ln.value;
-      if (typeof ln === 'string') return ln;
-    }
+    if (l.Name) { var n = l.Name; if (typeof n === 'object' && n.value) return n.value; if (typeof n === 'string') return n; }
+    if (l.ObjectType) { var ot = l.ObjectType; if (typeof ot === 'object' && ot.value) return ot.value; if (typeof ot === 'string') return ot; }
+    if (l.LongName) { var ln = l.LongName; if (typeof ln === 'object' && ln.value) return ln.value; if (typeof ln === 'string') return ln; }
   } catch (e) {}
   return null;
 }
@@ -1263,11 +1194,7 @@ function getIFCGuid(api, mid, id) {
   try {
     var l = api.GetLine(mid, id, false);
     if (!l) return null;
-    if (l.GlobalId) {
-      var g = l.GlobalId;
-      if (typeof g === 'object' && g.value) return g.value;
-      if (typeof g === 'string') return g;
-    }
+    if (l.GlobalId) { var g = l.GlobalId; if (typeof g === 'object' && g.value) return g.value; if (typeof g === 'string') return g; }
   } catch (e) {}
   return null;
 }
@@ -1277,9 +1204,7 @@ function getIFCTypeName(api, mid, id) {
       var typeCode = api.GetLineType(mid, id);
       if (typeCode && typeCode > 0) {
         var name = api.GetNameFromTypeCode(typeCode);
-        if (name && typeof name === 'string' && name.length > 2 && name !== 'IFCENTITY') {
-          return name.toUpperCase();
-        }
+        if (name && typeof name === 'string' && name.length > 2 && name !== 'IFCENTITY') return name.toUpperCase();
       }
     }
   } catch (e) {}
@@ -1304,11 +1229,7 @@ function getIFCStorey(api, mid, id) {
       var stId = refToId(rel.RelatingStructure);
       if (!stId) continue;
       var st = api.GetLine(mid, stId, false);
-      if (st && st.Name) {
-        var nm = st.Name;
-        if (typeof nm === 'object' && nm.value) return nm.value;
-        if (typeof nm === 'string') return nm;
-      }
+      if (st && st.Name) { var nm = st.Name; if (typeof nm === 'object' && nm.value) return nm.value; if (typeof nm === 'string') return nm; }
     }
     var decomp = toArray(line.Decomposes);
     for (var j = 0; j < decomp.length; j++) {
@@ -1319,24 +1240,19 @@ function getIFCStorey(api, mid, id) {
       var roId = refToId(d.RelatingObject);
       if (!roId) continue;
       var ro = api.GetLine(mid, roId, false);
-      if (ro && ro.Name) {
-        var nm2 = ro.Name;
-        if (typeof nm2 === 'object' && nm2.value) return nm2.value;
-        if (typeof nm2 === 'string') return nm2;
-      }
+      if (ro && ro.Name) { var nm2 = ro.Name; if (typeof nm2 === 'object' && nm2.value) return nm2.value; if (typeof nm2 === 'string') return nm2; }
     }
   } catch (e) {}
   return null;
 }
 function classifyDiscipline(ifcClass, name) {
   var s = ((ifcClass || '') + ' ' + (name || '')).toUpperCase();
-  if (/(IFCPIPE|PIPE|PLUMB|SANIT|WATER|DRAIN|SEWER)/.test(s)) return 'HIDRAULICO';
-  if (/(IFCCABLE|IFCLIGHT|IFCOUTLET|IFCSWITCH|ELECT|CABLE|CONDUIT|LIGHT|WIRE)/.test(s)) return 'ELETRICO';
-  if (/(IFCDUCT|IFCAIR|DUCT|HVAC|AIRTERMINAL|VENT|CHILLER|BOILER)/.test(s)) return 'HVAC';
-  if (/(IFCFIRE|SPRINK|FIRE|EXTINGUISH|ALARM|SMOKE)/.test(s)) return 'INCENDIO';
-  if (/(IFCWALL|IFCSLAB|IFCBEAM|IFCCOLUMN|IFCFOOTING|IFCPILE|IFCMEMBER|IFCPLATE|IFCREINFORC|IFCSTRUCT|IFCFOUNDATION|IFCRAMP|IFCSTAIR)/.test(s)) return 'ESTRUTURA';
-  if (/(IFCDOOR|IFCWINDOW|IFCSTAIR|IFCRAMP|IFCROOF|IFCCOVERING|IFCSPACE|IFCFURNITURE|IFCRAILING|IFCSLAB|IFCCURTAINWALL|IFCBUILDING)/.test(s)) return 'ARQUITETURA';
-  if (/IFCPROJECT|IFCSITE|IFCBUILDINGSTOREY/.test(s)) return 'ESTRUTURA';
+  if (/(IFCPIPE|PIPE|PLUMB|SANIT|WATER|DRAIN|SEWER|TUBUL|HIDR)/.test(s)) return 'HIDRAULICO';
+  if (/(IFCCABLE|IFCLIGHT|IFCOUTLET|IFCSWITCH|ELECT|CABLE|CONDUIT|LIGHT|WIRE|ELETR)/.test(s)) return 'ELETRICO';
+  if (/(IFCDUCT|IFCAIR|DUCT|HVAC|AIRTERMINAL|VENT|CHILLER|BOILER|ARCOND)/.test(s)) return 'HVAC';
+  if (/(IFCFIRE|SPRINK|FIRE|EXTINGUISH|ALARM|SMOKE|INCEN)/.test(s)) return 'INCENDIO';
+  if (/(IFCWALL|IFCSLAB|IFCBEAM|IFCCOLUMN|IFCFOOTING|IFCPILE|IFCMEMBER|IFCPLATE|IFCREINFORC|IFCSTRUCT|IFCFOUNDATION|IFCRAMP|IFCSTAIR|VIGA|PILAR|LAJE|ESTRUT)/.test(s)) return 'ESTRUTURA';
+  if (/(IFCDOOR|IFCWINDOW|IFCSTAIR|IFCRAMP|IFCROOF|IFCCOVERING|IFCSPACE|IFCFURNITURE|IFCRAILING|IFCSLAB|IFCCURTAINWALL|IFCBUILDING|PAREDE|PORTA|JANELA|ARQUI)/.test(s)) return 'ARQUITETURA';
   return 'OUTROS';
 }
 function getDisciplineColorHex(d) { return parseInt((DISCIPLINE_COLORS[d] || '#64748b').replace('#', ''), 16); }
@@ -1351,7 +1267,11 @@ window.addEventListener('load', function () {
   initRulesUI(); initCharts(); initColorSwatches(); updateDashboardUI();
   renderTextureGrid(); updateTextureLabels();
   window.addEventListener('resize', onWindowResize);
-  window.addEventListener('orientationchange', function () { setTimeout(onWindowResize, 200); });
+  window.addEventListener('orientationchange', function () { setTimeout(onWindowResize, 300); });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', onWindowResize);
+    window.visualViewport.addEventListener('scroll', onWindowResize);
+  }
   setInterval(applyLicenseGate, 60000);
 });
 
@@ -1394,12 +1314,12 @@ function init3DScene() {
   var container = document.getElementById('canvasWrapper');
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x090d16);
-  camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100000);
+  camera = new THREE.PerspectiveCamera(45, container.clientWidth / Math.max(1, container.clientHeight), 0.1, 100000);
   camera.up.set(0, 0, 1);
   camera.position.set(25, -25, 25);
-  renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bimCanvas'), antialias: !isMobile() });
-  renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bimCanvas'), antialias: false, alpha: false, powerPreference: 'high-performance', failIfMajorPerformanceCaveat: false });
+  renderer.setSize(container.clientWidth, container.clientHeight, false);
+  renderer.setPixelRatio(isIOS ? 1 : Math.min(window.devicePixelRatio, 2));
   renderer.localClippingEnabled = true;
   controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true; controls.dampingFactor = 0.08;
@@ -1436,9 +1356,11 @@ function animate() {
 function onWindowResize() {
   if (!renderer || !camera) return;
   var c = document.getElementById('canvasWrapper');
-  camera.aspect = c.clientWidth / c.clientHeight;
+  var w = c.clientWidth, h = c.clientHeight;
+  if (w === 0 || h === 0) return;
+  camera.aspect = w / h;
   camera.updateProjectionMatrix();
-  renderer.setSize(c.clientWidth, c.clientHeight);
+  renderer.setSize(w, h, false);
 }
 function buildAxisCompass() {
   var el = document.getElementById('axisCompass');
@@ -1561,13 +1483,13 @@ function showViewportStatus(msg) {
   statusTimer = setTimeout(function () { el.innerText = 'Motor 3D Ativo'; }, 3500);
 }
 
-/* IFC */
+/* IFC LOAD */
 function handleIFCUpload(event) {
   var files = Array.prototype.slice.call(event.target.files || []);
   if (!files.length) return;
   showLoading(true, 'Inicializando motor IFC...');
   if (typeof WebIFC === 'undefined') {
-    alert('Biblioteca WebIFC não carregada.\n\nBaixe web-ifc-api-iife.js e web-ifc.wasm em:\nhttps://thatopen.github.io/engine_web-ifc/build.zip\n\nColoque os dois na pasta e rode via servidor local.');
+    alert('Biblioteca WebIFC não carregada.\n\nBaixe web-ifc-api-iife.js e web-ifc.wasm em:\nhttps://thatopen.github.io/engine_web-ifc/build.zip\n\nColoque os dois na mesma pasta e rode via servidor local.');
     showLoading(false); event.target.value = ''; return;
   }
   if (!ifcApiInstance) {
@@ -1613,10 +1535,11 @@ function loadIFCFile(api, file) {
     state.modelTransforms[modelId] = { rot: { x: 0, y: 0, z: 0 }, pos: { x: 0, y: 0, z: 0 } };
 
     var count = 0;
+    var MAX_IOS = isIOS ? 3000 : 999999;
     var flatMeshes = api.LoadAllGeometry(modelID);
     for (var i = 0; i < flatMeshes.size(); i++) {
+      if (count >= MAX_IOS) { console.warn('[iOS] Limite atingido'); break; }
       var flat = flatMeshes.get(i);
-      // ✅ CORREÇÃO: usar getIFCTypeName com GetLineType
       var ifcType = getIFCTypeName(api, modelID, flat.expressID);
       var gs = flat.geometries;
       for (var j = 0; j < gs.size(); j++) {
@@ -1713,7 +1636,7 @@ function loadDemoProject() {
   }, 60);
 }
 
-/* MODELOS UI */
+/* MODELOS */
 function updateModelsListUI() {
   var list = document.getElementById('loadedModelsList');
   document.getElementById('modelCountBadge').innerText = state.models.length;
@@ -1833,7 +1756,6 @@ function makeLeaf(elem) {
   leaf.dataset.guid = elem.guid;
   var row = document.createElement('div');
   row.className = 'tree-row';
-  // ✅ Mostra nome + GUID curto
   var displayName = elem.name || elem.guid;
   var guidShort = (elem.guid || '').substring(0, 8);
   row.innerHTML = '<span class="tree-toggle"></span><input type="checkbox" checked><span style="color:#64748b">' + elem.ifcClass + '</span><span style="flex:1;color:#cbd5e1;overflow:hidden;text-overflow:ellipsis" title="' + (elem.guid || '') + '">' + displayName + '</span><span style="color:#475569;font-size:.55rem;font-family:monospace" title="GUID: ' + (elem.guid || '') + '">' + guidShort + '</span>';
@@ -2185,7 +2107,7 @@ function exportPDFReport() {
   var rows = state.clashes.map(function (c) {
     return '<tr><td><b>' + c.id + '</b></td><td style="color:' + severityColor(c.severity) + '"><b>' + c.severity + '</b></td><td>' + c.status + '</td><td>' + c.floor + '</td><td>' + escapeXml(c.elemA.disc) + ' — ' + escapeXml(c.elemA.name) + '</td><td>' + escapeXml(c.elemB.disc) + ' — ' + escapeXml(c.elemB.name) + '</td><td>' + c.overlap + '</td></tr>';
   }).join('');
-  var html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Relatório AP BIM</title><style>body{font-family:Arial,sans-serif;padding:24px;color:#0f172a}h1{color:#1e3a8a;margin-bottom:4px}.sub{color:#64748b;font-size:12px;margin-bottom:20px}.kpi{display:flex;gap:12px;margin-bottom:20px}.kpi div{flex:1;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center}.kpi b{display:block;font-size:22px;color:#1e3a8a}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #cbd5e1;padding:6px;text-align:left}th{background:#1e3a8a;color:white}footer{margin-top:20px;font-size:10px;color:#64748b;text-align:center}</style></head><body><h1>AP BIM — Relatório de Conflitos</h1><div class="sub">APAVAN ENGENHARIA E CONSULTORIA • ' + new Date().toLocaleString('pt-BR') + '</div><div class="kpi"><div><b>' + total + '</b>Total</div><div><b>' + crit + '</b>Críticos</div><div><b>' + resolved + '</b>Resolvidos</div><div><b>' + state.elements.length + '</b>Elementos</div></div><table><thead><tr><th>ID</th><th>Sev</th><th>Status</th><th>Pavimento</th><th>Elemento A</th><th>Elemento B</th><th>Interseção</th></tr></thead><tbody>' + (rows || '<tr><td colspan="7" style="text-align:center">Nenhum conflito detectado.</td></tr>') + '</tbody></table><footer>Documento gerado automaticamente pelo AP BIM v5.5</footer><script>setTimeout(function(){window.print();},400);<\/script></body></html>';
+  var html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Relatório AP BIM</title><style>body{font-family:Arial,sans-serif;padding:24px;color:#0f172a}h1{color:#1e3a8a;margin-bottom:4px}.sub{color:#64748b;font-size:12px;margin-bottom:20px}.kpi{display:flex;gap:12px;margin-bottom:20px}.kpi div{flex:1;border:1px solid #cbd5e1;border-radius:8px;padding:10px;text-align:center}.kpi b{display:block;font-size:22px;color:#1e3a8a}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #cbd5e1;padding:6px;text-align:left}th{background:#1e3a8a;color:white}footer{margin-top:20px;font-size:10px;color:#64748b;text-align:center}</style></head><body><h1>AP BIM — Relatório de Conflitos</h1><div class="sub">APAVAN ENGENHARIA E CONSULTORIA • ' + new Date().toLocaleString('pt-BR') + '</div><div class="kpi"><div><b>' + total + '</b>Total</div><div><b>' + crit + '</b>Críticos</div><div><b>' + resolved + '</b>Resolvidos</div><div><b>' + state.elements.length + '</b>Elementos</div></div><table><thead><tr><th>ID</th><th>Sev</th><th>Status</th><th>Pavimento</th><th>Elemento A</th><th>Elemento B</th><th>Interseção</th></tr></thead><tbody>' + (rows || '<tr><td colspan="7" style="text-align:center">Nenhum conflito detectado.</td></tr>') + '</tbody></table><footer>Documento gerado automaticamente pelo AP BIM v6.0</footer><script>setTimeout(function(){window.print();},400);<\/script></body></html>';
   win.document.write(html);
   win.document.close();
 }
